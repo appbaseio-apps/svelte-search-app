@@ -1,59 +1,19 @@
 <script>
 	import { getContext, onMount } from 'svelte';
 	const { searchbase } = getContext('searchContext');
-	// Register search component => To render the suggestions
-	const searchComponent = searchbase.register('search-component', {
-		enablePredictiveSuggestions: true,
-		dataField: ['name', 'description', 'name.raw', 'fullname', 'owner', 'topics'],
-		type: 'suggestion',
-		enableRecentSuggestions: true,
-		popularSuggestionsConfig: { size: 3, minChars: 2, index: 'good-books-ds' },
-		recentSuggestionsConfig: { size: 3, index: 'good-books-ds', minChars: 4 },
-		size: 10
-	});
-
 	// Register filter component with dependency on search component
 	const filterComponent = searchbase.register('language-filter', {
 		// The type property as `term` is to use the Elasticsearch terms aggregations.
 		type: 'term',
 		dataField: 'language.keyword'
 	});
+
+	//Svelte state variables
+	let aggregations = [];
 	// Build UI to display language options
 	filterComponent.subscribeToStateChanges(
 		(change) => {
-			const aggregations = change.aggregationData.next;
-			const container = document.getElementById('language-filter');
-			if (container) {
-				container.innerHTML = '';
-				aggregations.data.forEach((i) => {
-					if (i._key) {
-						const checkbox = document.createElement('input');
-						checkbox.type = 'checkbox';
-						checkbox.name = i._key;
-						checkbox.id = i._key;
-						checkbox.onclick = () => {
-							const values = filterComponent.value || [];
-							if (values && values.includes(i._key)) {
-								values.splice(values.indexOf(i._key), 1);
-							} else {
-								values.push(i._key);
-							}
-							// Set filter value and trigger custom query
-							filterComponent.setValue(values, {
-								triggerDefaultQuery: false,
-								triggerCustomQuery: true
-							});
-						};
-						const label = document.createElement('label');
-						label.htmlFor = i._key;
-						label.innerHTML = `${i._key}(${i._doc_count})`;
-						const div = document.createElement('div');
-						div.appendChild(checkbox);
-						div.appendChild(label);
-						container.appendChild(div);
-					}
-				});
-			}
+			aggregations = change.aggregationData.next.data;	
 		},
 		['aggregationData']
 	);
@@ -63,20 +23,55 @@
 	});
 </script>
 
-<div id="language-filter" class="filter" />
+<div class="filter">
+	<h1>Languages</h1>
+	<div id="language-filter" class="container">
+		{#each aggregations as aggregation (aggregation._key)}
+			<label class="filter__input">
+				<input type="checkbox" class="filter__check" name={aggregation._key} value={aggregation._key} />
+				<span class="text">{aggregation._key}</span>
+				<span class="doc_count">{aggregation._doc_count}</span>
+			</label>
+		{/each}
+	</div>
+</div>
 
 <style>
-	.filter :global(label) {
-		padding-left: 5px;
-		height: 30px;
-		line-height: 2;
+	.filter{
+		width: 100%;
 	}
-
-	.filter :global(input) {
+	.filter__check {
 		position: relative;
-		top: 2px;
+		width: min-content;
+		margin: 0.5rem;
 	}
-	.filter :global(div) {
-		padding-bottom: 5px;
+	.text{
+		flex: 1;
+	}
+	.filter__input{
+		display: flex;
+		justify-content: flex-start;
+		width: 100%;
+		align-items: center;
+		user-select: none;
+		cursor: pointer;
+	}
+	.doc_count{
+		justify-self: flex-end;
+		color: #9d9d9d;
+	}
+	.filter h1{
+		display: flex;
+		box-sizing: border-box;
+		padding: 16px;
+		align-items: center;
+		font-family: Roboto, "Helvetica Neue", sans-serif;
+		font-size: 14px;
+		font-weight: 500;
+		color: rgba(0,0,0,.54);
+		margin: 0;
+		height: 48px;
+		line-height: 16px;
+		margin-top: -8px;
 	}
 </style>
