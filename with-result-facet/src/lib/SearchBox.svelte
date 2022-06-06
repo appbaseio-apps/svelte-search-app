@@ -34,6 +34,7 @@
 	function onChange(item) {
 		selectedItem = item;
 		searchComponent.triggerDefaultQuery();
+		searchComponent.triggerCustomQuery();
 	}
 </script>
 
