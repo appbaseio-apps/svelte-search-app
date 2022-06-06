@@ -13,7 +13,8 @@
 	// Build UI to display language options
 	filterComponent.subscribeToStateChanges(
 		(change) => {
-			aggregations = change.aggregationData.next.data;	
+			aggregations = change.aggregationData.next.data;
+				
 		},
 		['aggregationData']
 	);
@@ -21,14 +22,28 @@
 	onMount(() => {
 		filterComponent.triggerDefaultQuery();
 	});
+
+	function handleSelect(e, i){
+		const values = filterComponent.value || [];
+          if (values && values.includes(i._key)) {
+            values.splice(values.indexOf(i._key), 1);
+          } else {
+            values.push(i._key);
+          }
+          // Set filter value and trigger custom query
+          filterComponent.setValue(values, {
+            triggerDefaultQuery: false,
+            triggerCustomQuery: true
+          });
+	}
 </script>
 
 <div class="filter">
 	<h1>Languages</h1>
 	<div id="language-filter" class="container">
 		{#each aggregations as aggregation (aggregation._key)}
-			<label class="filter__input">
-				<input type="checkbox" class="filter__check" name={aggregation._key} value={aggregation._key} />
+			<label class="filter__input" >
+				<input type="checkbox" on:click={(e)=>handleSelect(e, aggregation)} class="filter__check" name={aggregation._key} value={aggregation._key} />
 				<span class="text">{aggregation._key}</span>
 				<span class="doc_count">{aggregation._doc_count}</span>
 			</label>
