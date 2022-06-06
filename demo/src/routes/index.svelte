@@ -31,10 +31,16 @@
 <section>
 	<SearchBox />
 </section>
-<section>
-	<Facet />
-	<Result/>
-</section>
+<!--Changed by Shubham-->
+<div class="row">
+	<div class="col sidebar">
+		<Facet />
+	</div>
+	<div class="col content">
+		<Result/>
+	</div>
+</div>
+<!--Changed by Shubham-->
 
 <style>
 	section {
@@ -62,5 +68,15 @@
 		height: 100%;
 		top: 0;
 		display: block;
+	}
+	/**
+	Changed by Shubham below
+	*/
+	.sidebar {
+		border-right: 1px solid #ccc;
+		max-width: 400px;
+	}
+	.content{
+	background: #fafafa;
 	}
 </style>
