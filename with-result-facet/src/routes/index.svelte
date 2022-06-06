@@ -4,6 +4,8 @@
 
 <script>
 	import SearchBox from '$lib/SearchBox.svelte';
+	import Facet from '$lib/Facet.svelte';
+	import Result from '$lib/Result.svelte';
 	import { setContext } from 'svelte';
 	import { SearchBase } from '@appbaseio/searchbase';
 
@@ -29,6 +31,16 @@
 <section>
 	<SearchBox />
 </section>
+<!--Changed by Shubham-->
+<div class="row">
+	<div class="col sidebar">
+		<Facet />
+	</div>
+	<div class="col content">
+		<Result/>
+	</div>
+</div>
+<!--Changed by Shubham-->
 
 <style>
 	section {
@@ -56,5 +68,15 @@
 		height: 100%;
 		top: 0;
 		display: block;
+	}
+	/**
+	Changed by Shubham below
+	*/
+	.sidebar {
+		border-right: 1px solid #ccc;
+		max-width: 400px;
+	}
+	.content{
+	background: #fafafa;
 	}
 </style>
