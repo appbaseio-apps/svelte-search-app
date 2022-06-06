@@ -5,6 +5,7 @@
 <script>
 	import SearchBox from '$lib/SearchBox.svelte';
 	import Facet from '$lib/Facet.svelte';
+	import Result from '$lib/Result.svelte';
 	import { setContext } from 'svelte';
 	import { SearchBase } from '@appbaseio/searchbase';
 
@@ -32,6 +33,7 @@
 </section>
 <section>
 	<Facet />
+	<Result/>
 </section>
 
 <style>
