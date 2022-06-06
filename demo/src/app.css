@@ -101,3 +101,54 @@ button:focus:not(:focus-visible) {
 		font-size: 2.4rem;
 	}
 }
+
+/**Changed by shubham below**/
+.row {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+
+.col {
+	flex: 1;
+	padding: 15px;
+}
+
+.flex {
+	display: flex;
+}
+
+.wrap {
+	flex-wrap: wrap;
+}
+
+.column {
+	flex-direction: column;
+}
+
+.align-center {
+	align-items: center;
+}
+
+.justify-center {
+	justify-content: center;
+}
+
+.justify-space-between {
+	justify-content: space-between;
+}
+
+.text-center {
+	text-align: center;
+}
+
+@media screen and (max-width: 767px) {
+	.row {
+		flex-direction: column;
+	}
+
+	.row > .col:first-child {
+		border-right: none;
+		max-width: none;
+	}
+}
