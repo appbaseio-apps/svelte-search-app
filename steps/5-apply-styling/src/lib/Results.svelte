@@ -56,6 +56,9 @@
 
   {#each results as i (i._id)}
     <div class="result">
+      {#if i.language}
+        <span class="tag">{i.language}</span>
+      {/if}
       <div class="image">
         <img src={i.avatar} alt={i.name} />
       </div>
@@ -88,10 +91,8 @@
     padding: 10px;
     background: #ffffff;
     width: 100%;
-    min-height: 50px;
-    padding-top: 4px;
     min-height: 400px;
-    max-height: 405px;
+    height: max(78vh, 400px);
     overflow: auto;
     position: relative;
   }
@@ -106,6 +107,7 @@
     left: 0;
     top: 0;
     background: #ffffffbd;
+    z-index: 2;
   }
   .restuls-stats {
     text-align: center;
@@ -119,6 +121,7 @@
     overflow: hidden;
     flex-wrap: wrap;
     width: 100%;
+    position: relative;
   }
   .result:first {
     padding-top: 0;
@@ -166,5 +169,15 @@
 
   .bottom a {
     text-decoration: none;
+  }
+  .tag {
+    position: absolute;
+    background: #0a0a22;
+    display: inline-block;
+    padding: 3px 5px;
+    border-radius: 4px;
+    color: white;
+    top: 12px;
+    right: 12px;
   }
 </style>
