@@ -63,7 +63,6 @@
 <div class="autocomplete-wrapper">
   <div class="search-icon-wrapper"><Icon /></div>
   <AutoComplete
-    showClear={true}
     searchFunction={getSuggestions}
     delay={500}
     localFiltering={false}
@@ -98,7 +97,7 @@
     fill: #0b6aff;
   }
   .autocomplete-wrapper :global(.autocomplete) {
-    width: min(100vw, 500px);
+    width: min(80vw, 500px);
     height: 40px;
   }
 
@@ -166,5 +165,6 @@
     white-space: nowrap;
     width: 90%;
     text-align: left;
+    line-height: 20px;
   }
 </style>
