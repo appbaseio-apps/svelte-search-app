@@ -70,7 +70,7 @@
     labelFieldName="value"
     valueFieldName="value"
     bind:selectedItem
-    placeholder="Search Git..."
+    placeholder="Search GitHub"
     {onChange}
     hideArrow={true}
     minCharactersToSearch={0}
