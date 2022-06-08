@@ -4,10 +4,17 @@
 
   import AutoComplete from "simple-svelte-autocomplete";
 
-	// Register search component => To render the suggestions
+  // Register search component => To render the suggestions
 
   const searchComponent = searchbase.register("search-component", {
-    		dataField: ['name', 'description', 'name.raw', 'fullname', 'owner', 'topics'],
+    dataField: [
+      "name",
+      "description",
+      "name.raw",
+      "fullname",
+      "owner",
+      "topics",
+    ],
     includeFields: [
       "name",
       "description",
@@ -58,7 +65,7 @@
   labelFieldName="value"
   valueFieldName="value"
   bind:selectedItem
-  placeholder="Searh Git..."
+  placeholder="Search Git..."
   {onChange}
   hideArrow={true}
   minCharactersToSearch={0}

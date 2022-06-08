@@ -5,7 +5,7 @@
   import AutoComplete from "simple-svelte-autocomplete";
   import Icon from "./Icons.svelte";
   // Register search component => To render the suggestions
-  const searchComponent = searchbase.register("search-component", {    
+  const searchComponent = searchbase.register("search-component", {
     type: "suggestion",
     enableRecentSuggestions: true,
     popularSuggestionsConfig: { size: 3, minChars: 2 },
@@ -44,7 +44,7 @@
     labelFieldName="value"
     valueFieldName="value"
     bind:selectedItem
-    placeholder="Searh Git..."
+    placeholder="Search Git..."
     {onChange}
     hideArrow={true}
     minCharactersToSearch={0}
@@ -137,5 +137,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+    width: 90%;
+    text-align: left;
   }
 </style>

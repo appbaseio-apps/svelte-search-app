@@ -3,10 +3,17 @@
   const { searchbase } = getContext("searchContext");
 
   import AutoComplete from "simple-svelte-autocomplete";
-	// Register search component => To render the suggestions
+  // Register search component => To render the suggestions
 
   const searchComponent = searchbase.register("search-component", {
-    		dataField: ['name', 'description', 'name.raw', 'fullname', 'owner', 'topics'],
+    dataField: [
+      "name",
+      "description",
+      "name.raw",
+      "fullname",
+      "owner",
+      "topics",
+    ],
     includeFields: [
       "name",
       "description",
@@ -45,7 +52,7 @@
     searchComponent.setValue(item?.value, { triggerDefaultQuery: false });
     // triggerDefaultQuery makes an api call to fetch the suggestions
     searchComponent.triggerDefaultQuery();
-// triggers api calls for dependent controllers
+    // triggers api calls for dependent controllers
     searchComponent.triggerCustomQuery();
   }
 </script>
@@ -59,7 +66,7 @@
   labelFieldName="value"
   valueFieldName="value"
   bind:selectedItem
-  placeholder="Searh Git..."
+  placeholder="Search Git..."
   {onChange}
   hideArrow={true}
   minCharactersToSearch={0}
