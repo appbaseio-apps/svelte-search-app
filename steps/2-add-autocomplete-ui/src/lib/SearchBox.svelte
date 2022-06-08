@@ -57,7 +57,6 @@
 </script>
 
 <AutoComplete
-  showClear={true}
   searchFunction={getSuggestions}
   delay={500}
   localFiltering={false}
@@ -65,7 +64,7 @@
   labelFieldName="value"
   valueFieldName="value"
   bind:selectedItem
-  placeholder="Search Git..."
+  placeholder="Search GitHub"
   {onChange}
   hideArrow={true}
   minCharactersToSearch={0}

@@ -1,5 +1,6 @@
 <script>
   import { getContext, onMount } from "svelte";
+  import Loader from "./Loader.svelte";
   const { searchbase } = getContext("searchContext");
   // Register filter component with dependency on search component
   const filterComponent = searchbase.register("language-filter", {
@@ -50,9 +51,7 @@
   <h1>Languages</h1>
   <div id="language-filter" class="container">
     {#if isLoading}
-      <div class="loader-wrapper">
-        Loading...
-      </div>
+      <div class="loader-wrapper">loading...</div>
     {:else}
       {#each aggregations as aggregation (aggregation._key)}
         {#if aggregation._key}
@@ -62,7 +61,7 @@
               on:click={(e) => handleSelect(e, aggregation)}
               class="filter__check"
               name={aggregation._key}
-              value={aggregation._key}
+              checked={filterComponent.value?.includes(aggregation._key)}
             />
             <span class="text">{aggregation._key}</span>
             <span class="doc_count">{aggregation._doc_count}</span>

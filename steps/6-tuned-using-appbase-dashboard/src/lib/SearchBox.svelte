@@ -1,5 +1,5 @@
 <script>
-  import { getContext } from "svelte";
+  import { getContext, onMount } from "svelte";
   const { searchbase } = getContext("searchContext");
 
   import AutoComplete from "simple-svelte-autocomplete";
@@ -24,19 +24,40 @@
 
     return results;
   }
-
+  const resetFilterComponent = () => {
+    const facetInstance = searchbase.getComponents()["language-filter"];
+    facetInstance?.setValue([], { triggerDefaultQuery: false });
+  };
   function onChange(item) {
     selectedItem = item;
-    searchComponent.setValue(item?.value, { triggerDefaultQuery: false });
-    searchComponent.triggerDefaultQuery();
-    searchComponent.triggerCustomQuery();
+    resetFilterComponent();
+    searchComponent.setValue(item?.value, {
+      triggerDefaultQuery: true,
+      triggerCustomQuery: true,
+    });
   }
+
+  onMount(() => {
+    const listenInputValueChange = (e) => {
+      if (!e.target.value) {
+        resetFilterComponent();
+        // reset search-component controller's value
+        searchComponent.setValue("", {
+          triggerDefaultQuery: true,
+          triggerCustomQuery: true,
+        });
+      }
+    };
+    const inputElement =
+      document.getElementsByClassName("autocomplete-input")[0];
+    /* event listener */
+    inputElement.addEventListener("input", listenInputValueChange);
+  });
 </script>
 
 <div class="autocomplete-wrapper">
   <div class="search-icon-wrapper"><Icon /></div>
   <AutoComplete
-    showClear={true}
     searchFunction={getSuggestions}
     delay={500}
     localFiltering={false}
@@ -44,7 +65,7 @@
     labelFieldName="value"
     valueFieldName="value"
     bind:selectedItem
-    placeholder="Search Git..."
+    placeholder="Search GitHub"
     {onChange}
     hideArrow={true}
     minCharactersToSearch={0}
@@ -71,7 +92,7 @@
     fill: #0b6aff;
   }
   .autocomplete-wrapper :global(.autocomplete) {
-    width: min(100vw, 500px);
+    width: min(80vw, 500px);
     height: 40px;
   }
 
@@ -86,7 +107,7 @@
     border-top: 1px solid #f2f0f0;
   }
   .autocomplete-wrapper :global(.autocomplete-list-item) {
-    padding: 12px 10px;
+    padding: 10px;
   }
   .autocomplete-wrapper :global(.autocomplete-list-item.selected) {
     transition: all 0.3s ease-in;
@@ -139,5 +160,6 @@
     white-space: nowrap;
     width: 90%;
     text-align: left;
+    line-height: 20px;
   }
 </style>

@@ -40,6 +40,12 @@
     // fetch results for the controller
     resultComponent.triggerDefaultQuery();
   });
+
+  const formatNumber = (number) => {
+    return new Intl.NumberFormat("en-IN", {
+      maximumSignificantDigits: 3,
+    }).format(number);
+  };
 </script>
 
 <div class="results">
@@ -50,7 +56,7 @@
   {/if}
   {#if resultStats}
     <p class="restuls-stats">
-      Showing {resultStats.numberOfResults} in {resultStats.time} ms
+      Showing {formatNumber(resultStats.numberOfResults)} in {resultStats.time} ms
     </p>
   {/if}
 
@@ -66,7 +72,7 @@
         <h4 title={i.name}>{i.name}</h4>
         <p title={i.description}>{i.description}</p>
         <div class="bottom">
-          <span>⭐️ {i.stars}</span>
+          <span>⭐️ {formatNumber(i.stars)}</span>
 
           <a target="_blank" href={i.url}> 🔗 View on GitHub</a>
         </div>

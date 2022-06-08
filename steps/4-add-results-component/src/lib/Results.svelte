@@ -51,6 +51,9 @@
 
     {#each results as i (i._id)}
       <div class="result">
+        {#if i.language}
+          <span class="tag">{i.language}</span>
+        {/if}
         <div class="image">
           <img src={i.avatar} alt={i.name} />
         </div>
@@ -59,6 +62,7 @@
           <p title={i.description}>{i.description}</p>
           <div class="bottom">
             <span>⭐️ {i.stars}</span>
+
             <a target="_blank" href={i.url}> 🔗 View on GitHub</a>
           </div>
         </div>
@@ -68,18 +72,30 @@
 </div>
 
 <style>
+  :root {
+    box-sizing: border-box;
+  }
   .results {
     padding: 10px;
     background: #ffffff;
     width: 100%;
-    min-height: 50px;
-    padding-top: 4px;
+    min-height: 400px;
+    height: max(78vh, 400px);
+    overflow: auto;
+    position: relative;
   }
   .loader-wrapper {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 300px;
+    height: 100%;
+    min-height: 400px;
+    position: sticky;
+    width: 100%;
+    left: 0;
+    top: 0;
+    background: #ffffffbd;
+    z-index: 2;
   }
   .restuls-stats {
     text-align: center;
@@ -91,6 +107,9 @@
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     border-radius: 6px;
     overflow: hidden;
+    flex-wrap: wrap;
+    width: 100%;
+    position: relative;
   }
   .result:first {
     padding-top: 0;
@@ -106,8 +125,11 @@
   }
 
   .result .details {
-    flex-grow: 1;
     padding-left: 20px;
+    flex: 1;
+    min-width: 300px;
+
+    padding-bottom: 5px;
   }
 
   .result h4 {
@@ -119,10 +141,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     padding-right: 1rem;
-    height: 60px;
+    height: 47px;
+    line-height: 22px;
   }
 
   .bottom {
@@ -134,5 +157,15 @@
 
   .bottom a {
     text-decoration: none;
+  }
+  .tag {
+    position: absolute;
+    background: #0a0a22;
+    display: inline-block;
+    padding: 3px 5px;
+    border-radius: 4px;
+    color: white;
+    top: 12px;
+    right: 12px;
   }
 </style>
