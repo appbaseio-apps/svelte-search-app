@@ -1,6 +1,6 @@
 <script>
   import { getContext, onMount } from "svelte";
-  import Loader from "./Loader.svelte";
+
   const { searchbase } = getContext("searchContext");
   // Register filter component with dependency on search component
   const filterComponent = searchbase.register("language-filter", {
