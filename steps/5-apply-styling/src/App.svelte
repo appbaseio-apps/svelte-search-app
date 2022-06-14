@@ -21,10 +21,17 @@
 </script>
 
 <svelte:head>
-  <title>Search App</title>
+  <title>GitHub Search - Svelte App</title>
   <meta name="description" content="Svelte demo app" />
 </svelte:head>
-
+<nav>
+  <img
+    src="https://miro.medium.com/max/700/0*lPloL8w-ZKtjxeB5.png"
+    alt="svelte logo"
+  />
+  <h1>GitHub Search</h1>
+  <a href="#" target="_blank">🔗 Read how it's built</a>
+</nav>
 <section>
   <SearchBox />
 </section>
@@ -38,6 +45,9 @@
 </div>
 
 <style>
+  body {
+    margin: 0;
+  }
   section {
     width: 100%;
     text-align: center;
@@ -45,8 +55,30 @@
     box-sizing: border-box;
   }
 
-  h1 {
-    width: 100%;
+  nav {
+    display: flex;
+    background: #fe3e0012;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  nav img {
+    height: 80px;
+    position: relative;
+    top: -3px;
+  }
+
+  nav a {
+    text-decoration: none;
+    font-size: 1.5rem;
+    color: #1c07ee;
+  }
+  nav h1 {
+    width: max-content;
+    font-size: 1.7rem;
+    color: #fe3e00;
   }
 
   .row {

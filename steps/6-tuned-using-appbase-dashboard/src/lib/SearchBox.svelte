@@ -14,14 +14,18 @@
   });
 
   let selectedItem;
-
+  let inputValue = "";
   async function getSuggestions(keyword) {
-    console.log("getSuggestion");
     // Set the value to fetch the suggestions
     searchComponent.setValue(keyword, { triggerDefaultQuery: false });
     const results =
       (await searchComponent.triggerDefaultQuery())?.hits?.hits ?? [];
-
+    if (inputValue) {
+      results.unshift({
+        label: `Find all results for \"${inputValue}\"`,
+        value: inputValue,
+      });
+    }
     return results;
   }
   const resetFilterComponent = () => {
@@ -47,6 +51,8 @@
           triggerCustomQuery: true,
         });
       }
+
+      inputValue = e.target.value;
     };
     const inputElement =
       document.getElementsByClassName("autocomplete-input")[0];

@@ -1,11 +1,10 @@
 <script>
-  import { getContext } from "svelte";
+  import { getContext, onMount } from "svelte";
   const { searchbase } = getContext("searchContext");
 
   import AutoComplete from "simple-svelte-autocomplete";
 
   // Register search component => To render the suggestions
-
   const searchComponent = searchbase.register("search-component", {
     dataField: [
       "name",
@@ -30,30 +29,47 @@
     size: 10,
   });
 
-  // keep track of the current selected suggestion
   let selectedItem;
-
-  // function to fetch suggestions from reactivesearch backend
+  let inputValue = "";
   async function getSuggestions(keyword) {
-    // Set the value of the search-component controller
+    // Set the value to fetch the suggestions
     searchComponent.setValue(keyword, { triggerDefaultQuery: false });
-    // triggerDefaultQuery makes an api call to fetch the suggestions
     const results =
       (await searchComponent.triggerDefaultQuery())?.hits?.hits ?? [];
-
+    if (inputValue) {
+      results.unshift({
+        label: `Find all results for \"${inputValue}\"`,
+        value: inputValue,
+      });
+    }
     return results;
   }
 
-  // event callback triggered when a suggestion from the
-  // dropdown is selected
   function onChange(item) {
-    // update the selectedItem variable
     selectedItem = item;
-    // update the current value of the searchComponent controller
-    searchComponent.setValue(item?.value, { triggerDefaultQuery: false });
-    // triggerDefaultQuery makes an api call to fetch the suggestions
-    searchComponent.triggerDefaultQuery();
+    searchComponent.setValue(item?.value, {
+      triggerDefaultQuery: true,
+      triggerCustomQuery: true,
+    });
   }
+
+  onMount(() => {
+    const listenInputValueChange = (e) => {
+      if (!e.target.value) {
+        // reset search-component controller's value
+        searchComponent.setValue("", {
+          triggerDefaultQuery: true,
+          triggerCustomQuery: true,
+        });
+      }
+
+      inputValue = e.target.value;
+    };
+    const inputElement =
+      document.getElementsByClassName("autocomplete-input")[0];
+    /* event listener */
+    inputElement.addEventListener("input", listenInputValueChange);
+  });
 </script>
 
 <AutoComplete

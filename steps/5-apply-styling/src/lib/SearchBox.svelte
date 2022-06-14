@@ -1,11 +1,10 @@
 <script>
-  import { getContext } from "svelte";
+  import { getContext, onMount } from "svelte";
   const { searchbase } = getContext("searchContext");
-  // @ts-ignore
+
   import AutoComplete from "simple-svelte-autocomplete";
   import Icon from "./Icons.svelte";
   // Register search component => To render the suggestions
-
   const searchComponent = searchbase.register("search-component", {
     dataField: [
       "name",
@@ -30,34 +29,52 @@
     size: 10,
   });
 
-  /**
-   * @type {object}
-   */
   let selectedItem;
-
-  /**
-   * @param {string} keyword
-   */
+  let inputValue = "";
   async function getSuggestions(keyword) {
-    console.log("getSuggestion");
     // Set the value to fetch the suggestions
     searchComponent.setValue(keyword, { triggerDefaultQuery: false });
     const results =
       (await searchComponent.triggerDefaultQuery())?.hits?.hits ?? [];
-
+    if (inputValue) {
+      results.unshift({
+        label: `Find all results for \"${inputValue}\"`,
+        value: inputValue,
+      });
+    }
     return results;
   }
-
-  /**
-   * @param {object} item
-   */
+  const resetFilterComponent = () => {
+    const facetInstance = searchbase.getComponents()["language-filter"];
+    facetInstance?.setValue([], { triggerDefaultQuery: false });
+  };
   function onChange(item) {
     selectedItem = item;
-    // @ts-ignore
-    searchComponent.setValue(item?.value, { triggerDefaultQuery: false });
-    searchComponent.triggerDefaultQuery();
-    searchComponent.triggerCustomQuery();
+    resetFilterComponent();
+    searchComponent.setValue(item?.value, {
+      triggerDefaultQuery: true,
+      triggerCustomQuery: true,
+    });
   }
+
+  onMount(() => {
+    const listenInputValueChange = (e) => {
+      if (!e.target.value) {
+        resetFilterComponent();
+        // reset search-component controller's value
+        searchComponent.setValue("", {
+          triggerDefaultQuery: true,
+          triggerCustomQuery: true,
+        });
+      }
+
+      inputValue = e.target.value;
+    };
+    const inputElement =
+      document.getElementsByClassName("autocomplete-input")[0];
+    /* event listener */
+    inputElement.addEventListener("input", listenInputValueChange);
+  });
 </script>
 
 <div class="autocomplete-wrapper">
@@ -112,7 +129,7 @@
     border-top: 1px solid #f2f0f0;
   }
   .autocomplete-wrapper :global(.autocomplete-list-item) {
-    padding: 12px 10px;
+    padding: 10px;
   }
   .autocomplete-wrapper :global(.autocomplete-list-item.selected) {
     transition: all 0.3s ease-in;
