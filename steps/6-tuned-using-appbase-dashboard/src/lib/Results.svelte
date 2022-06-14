@@ -41,7 +41,7 @@
   });
   const formatNumber = (number) => {
     return new Intl.NumberFormat("en-IN", {
-      maximumSignificantDigits: 3,
+      maximumSignificantDigits: 6,
     }).format(number);
   };
 </script>
