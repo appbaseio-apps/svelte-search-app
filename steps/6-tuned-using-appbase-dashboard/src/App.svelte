@@ -30,7 +30,10 @@
     alt="svelte logo"
   />
   <h1>GitHub Search</h1>
-  <a href="#" target="_blank">🔗 Read how it's built</a>
+  <a
+    href="https://blog.reactivesearch.io/search-ui-with-svelte-and-elasticsearch"
+    target="_blank">🔗 Read how it's built</a
+  >
 </nav>
 <section>
   <SearchBox />
